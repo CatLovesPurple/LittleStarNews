@@ -5,18 +5,20 @@ var service = angular.module("service", []);
 
 
 
-service.factory("postFactory", [function(){
-    var data =
-        {
-            post :   [
-                {title: 'post 1', upvotes: 5, comments:[{author:"andy", body:"lol", upvotes:0}]},
-                {title: 'post 2', upvotes: 2, comments:[{author:"andy", body:"lol", upvotes:0}]},
-                {title: 'post 3', upvotes: 15, comments:[{author:"andy", body:"lol", upvotes:0}]},
-                {title: 'post 4', upvotes: 9, comments:[{author:"andy", body:"lol", upvotes:0}]},
-                {title: 'post 5', upvotes: 4, comments:[{author:"andy", body:"lol", upvotes:0}]}
-            ]
+service.factory("postFactory", ["http",
+    function($http){
+        return {
+            get : function(){
+                return $http.get("/posts");
+            },
+            create: function(newPost){
+                return $http.post("/post", newPost);
+            },
+            delete : function(id){
+                return $http.delete("/post/" + id);
+            }
         }
 
-    return data;
+
 }]);
 

@@ -10,4 +10,28 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
+
+router.get('/posts', function(req, res, next){
+    Post.find(function(err, allPosts){
+        if(err){
+            return next(err);
+        }
+        res.json(allPosts);
+    });
+});
+
+
+router.post('/post', function(req, res, next){
+    var newPost = new Post(req.body);
+    Post.create({
+        title:req.body.title,
+        link:req.body.link
+    }, function(err, newPost){
+        if(err){
+            next(err);
+        }
+        res.json(newPost);
+    });
+});
+
 module.exports = router;

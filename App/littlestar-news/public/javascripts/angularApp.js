@@ -21,23 +21,23 @@ app.config([
 
 
 app.controller("mainCtrl", ["$scope", "postFactory", function ($scope, postFactory) {
-    $scope.posts = postFactory.post;
-    $scope.addPost = function(){
+    $scope.addPost = function() {
         var title = $scope.title;
-        if(!title || title === ""){
+        if (!title || title === "" || !link || link === "") {
             return;
         }
-        postFactory.post.push({
-            title: title,
-            upvotes:1,
-            link : $scope.link,
-            comments: [
-                {author: 'Joe', body: 'Cool post!', upvotes: 0},
-                {author: 'Bob', body: 'Great idea but everything is wrong!', upvotes: 0}
-            ]
-        });
-        $scope.title = '';
-        $scope.link = '';
+        var newPost = {
+            "title": $scope.formData.title,
+            "link": $scope.formData.link
+        }
+        postFactory.create(newPost)
+            .success(function (data) {
+                console.log("you just create a new post");
+                console.log(data);
+
+            });
+        $scope.formData = {};
+        todoFactory.create(newPost)
     };
 
     $scope.incrementPost = function(post){
