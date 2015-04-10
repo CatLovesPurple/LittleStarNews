@@ -20,24 +20,31 @@ app.config([
     }]);
 
 
-app.controller("mainCtrl", ["$scope", "postFactory", function ($scope, postFactory) {
+app.controller("mainCtrl", ["$scope", "$http", "postFactory", function ($scope, $http, postFactory) {
+    postFactory.get().success(function(data){
+        $scope.posts = data;
+    });
+
     $scope.addPost = function() {
         var title = $scope.title;
+        var link = $scope.link;
         if (!title || title === "" || !link || link === "") {
             return;
         }
         var newPost = {
-            "title": $scope.formData.title,
-            "link": $scope.formData.link
+            "title": title,
+            "link": link
         }
         postFactory.create(newPost)
             .success(function (data) {
-                console.log("you just create a new post");
-                console.log(data);
+                postFactory.get().success(function(allPosts){
+                    $scope.posts = allPosts;
+                });
 
             });
-        $scope.formData = {};
-        todoFactory.create(newPost)
+        $scope.title = "";
+        $scope.link = "";
+
     };
 
     $scope.incrementPost = function(post){

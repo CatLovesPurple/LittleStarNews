@@ -1,12 +1,6 @@
-/**
- * Created by Yan on 4/7/2015.
- */
 var service = angular.module("service", []);
 
-
-
-service.factory("postFactory", ["http",
-    function($http){
+service.factory("postFactory",  ["$http", function($http){
         return {
             get : function(){
                 return $http.get("/posts");
