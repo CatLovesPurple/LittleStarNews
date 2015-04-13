@@ -21,6 +21,24 @@ router.get('/posts', function(req, res, next){
 });
 
 
+router.param('post', function(req, res, next, id) {
+
+    var query = Post.findById(id);
+
+    query.exec(function (err, post){
+        if (err) { return next(err); }
+        if (!post) { return next(new Error('can\'t find post')); }
+        console(id);
+        req.post = post;
+        return next();
+    });
+});
+
+router.get('/posts/:post', function(req, res) {
+    res.json(req.post);
+});
+
+
 router.post('/post', function(req, res, next){
     var newPost = new Post(req.body);
     Post.create({
@@ -33,5 +51,19 @@ router.post('/post', function(req, res, next){
         res.json(newPost);
     });
 });
-
+//router.get('/posts/:id', function(req, res, next){
+//    //Post.findOne({}, function(err, post){
+//    //    if(err){
+//    //        return next(err);
+//    //    }
+//    //    res.json(post);
+//    //});
+//    Post.findOne({"_id":req.params._id}, function(err, post){
+//        if(err){
+//            console.log(err);
+//            return next(err);
+//        }
+//        res.json(post);
+//    })
+//});
 module.exports = router;

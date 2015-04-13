@@ -37,8 +37,11 @@ app.controller("mainCtrl", ["$scope", "$http", "postFactory", function ($scope, 
         }
         postFactory.create(newPost)
             .success(function (data) {
+
                 postFactory.get().success(function(allPosts){
                     $scope.posts = allPosts;
+
+
                 });
 
             });
@@ -54,11 +57,10 @@ app.controller("mainCtrl", ["$scope", "$http", "postFactory", function ($scope, 
 
 
 app.controller("postCtrl", ["$scope", '$stateParams', "postFactory", function($scope, $stateParams, postFactory){
-    $scope.post = postFactory.post[$stateParams.id];
+    //$scope.post = postFactory.get($stateParams.id);
+    //$scope.post = postFactory.getById($stateParams.id);
+
     $scope.addComment = function(){
-        if($scope.body === ""){
-            return;
-        }
         var currentComments = postFactory.post[$stateParams.id].comments;
         currentComments.push({
             author:$scope.author,

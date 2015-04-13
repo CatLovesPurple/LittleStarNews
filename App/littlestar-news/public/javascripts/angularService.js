@@ -10,6 +10,9 @@ service.factory("postFactory",  ["$http", function($http){
             },
             delete : function(id){
                 return $http.delete("/post/" + id);
+            },
+            getById : function(id){
+                return $http.get("posts/" + id);
             }
         }
 
